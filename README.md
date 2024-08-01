@@ -44,7 +44,7 @@
   </tr>
 </table>
 
-## 🚀 Tech Stack 🚀
+  ## 🚀 Tech Stack 🚀
 
 <table>
   <tr>
@@ -62,14 +62,19 @@
     <td><img src="https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white"/></td>
     <td></td>
   </tr>
-  <tr>
-    <td rowspan="4">프레임워크</td>
+    <tr>
+    <td rowspan="1">프레임워크</td>
     <td><img src="https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white"/></td>
     <td></td>
   </tr>
   <tr>
+    <td rowspan="7">라이브러리/모듈</td>
     <td><img src="https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=spring-security&logoColor=white"/></td>
     <td>보안</td>
+  </tr>
+    <tr>
+    <td><img src="https://img.shields.io/badge/Spring_Batch-6DB33F?style=for-the-badge&logo=spring&logoColor=white"/></td>
+    <td>배치 처리</td>
   </tr>
   <tr>
     <td><img src="https://img.shields.io/badge/SSE-1E90FF?style=for-the-badge&logoColor=white"/></td>
@@ -78,6 +83,18 @@
   <tr>
     <td><img src="https://img.shields.io/badge/JPA(Hibernate)-59666C?style=for-the-badge&logo=hibernate&logoColor=white"/></td>
     <td></td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/Quartz-1A1A1A?style=for-the-badge&logoColor=white"/></td>
+    <td>스케줄링</td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white"/></td>
+    <td>로그인</td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/OAuth2-FF4B4B?style=for-the-badge&logo=oauth&logoColor=white"/></td>
+    <td>로그인</td>
   </tr>
   <tr>
     <td rowspan="2">테스트 도구</td>
@@ -106,11 +123,6 @@
     <td><img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"/></td>
     <td></td>
   </tr>
-<!--   <tr>
-    <td rowspan="1">컨테이너화 도구</td>
-    <td><img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/></td>
-    <td></td>
-  </tr> -->
   <tr>
     <td rowspan="4">클라우드 서비스</td>
     <td><img src="https://img.shields.io/badge/AWS_EC2-FF9900?style=for-the-badge&logo=amazon-ec2&logoColor=white"/></td>
@@ -129,9 +141,13 @@
     <td>서버 관리</td>
   </tr>
   <tr>
-    <td rowspan="1">CI/CD</td>
+    <td rowspan="2">CI/CD</td>
     <td><img src="https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white"/></td>
-    <td></td>
+    <td>CI</td>
+  <tr>
+    <td><img src="https://img.shields.io/badge/AWS_CodeDeploy-232F3E?style=for-the-badge&logo=aws-code-deploy&logoColor=white"/></td>
+    <td>CD</td>
+  </tr>
   </tr>
    <tr>
     <td rowspan="2">배포</td>
@@ -147,9 +163,120 @@
     <td><img src="https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white"/></td>
     <td></td>
   </tr>
+    <tr>
+    <td rowspan="3">도구</td>
+    <td><img src="https://img.shields.io/badge/IntelliJ-000000?style=for-the-badge&logo=intellij-idea&logoColor=white"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white"/></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jira&logoColor=white"/></td>
+    <td>프로젝트 이슈 관리</td>
+  </tr>
 </table>
 
-## ✨ Features ✨
+### 🤝 Collaborative Tools 🤝
+<table>
+  <tr>
+    <th>도구</th>
+    <th>활용</th>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white"/></td>
+    <td>진행상황 공유</td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white"/></td>
+    <td>문서 정리</td>
+  </tr>
+  <tr>
+    <td><img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white"/></td>
+    <td>음성 회의</td>
+  </tr>
+</table>
+
+## 🖋️ ERD 🖋️
+![스터디뱃지 프로젝트 ERD](https://github.com/user-attachments/assets/ea2466c0-7480-4b42-bdf5-81e799b3f408)
+
+## ✨ Key Features ✨
+
+<table>
+  <tr>
+    <th>기능</th>
+    <th>설명</th>
+  </tr>
+  <tr>
+    <td rowspan="5">회원 관리</td>
+    <td>회원가입 및 로그인</td>
+  </tr>
+  <tr>
+    <td>소셜 로그인(카카오, 네이버)</td>
+  </tr>
+  <tr>
+    <td>결제 기능 지원</td>
+  </tr>
+  <tr>
+    <td>회원 정보 수정</td>
+  </tr>
+    <tr>
+    <td>비밀번호 재설정</td>
+  </tr>
+  <tr>
+    <td rowspan="4">스터디 그룹 관리</td>
+    <td>스터디 모임 생성 및 관리</td>
+  </tr>
+  <tr>
+    <td>참가자 승인, 거절 </td>
+  </tr>
+  <tr>
+    <td>참가자 역할 분담 및 퇴출 </td>
+  </tr>
+  <tr>
+    <td>이달의 출석왕 선정</td>
+  </tr>
+  <tr>
+    <td rowspan="4">출석 체크 및 통계</td>
+    <td>출석 체크 10분전 리마인드 알림 기능</td>
+  </tr>
+  <tr>
+    <td>일정의 출석 체크 기능</td>
+  </tr>
+  <tr>
+    <td>출석률에 따른 환급 포인트 제공</td>
+  </tr>
+  <tr>
+    <td>출석률 통계</td>
+  </tr>
+  <tr>
+    <td rowspan="4">일정 관리</td>
+    <td>스터디 리더가 단일 일정 및 반복 일정 등록, 수정, 삭제</td>
+  </tr>
+    <tr>
+    <td> 일정 조회 </td>
+  </tr>
+  <tr>
+    <td>일정 관련 스터디 멤버에게 알림 기능</td>
+  </tr>
+  <tr>
+    <td>오프라인 일정일 경우 장소 선택 가능</td>
+  </tr>
+  <tr>
+    <td rowspan="3">알림 시스템</td>
+    <td>실시간 알림 (SSE 사용)</td>
+  </tr>
+  <tr>
+    <td>알림 조회 기능</td>
+  </tr>
+  <tr>
+    <td>알림 읽음 처리</td>
+  </tr>
+</table>
+
+
+## 🌠 My Features 🌠
 
 | API Category | Description |
 |--------------|-------------|
