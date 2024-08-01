@@ -40,7 +40,7 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final PaymentConfig paymentConfig;
     private final PointRepository pointRepository;
-
+    @Transactional
     public PaymentResponse requestPayment(Long memberId, PaymentRequest paymentRequest) {
 
         Member member = memberRepository.findById(memberId)
@@ -158,7 +158,7 @@ public class PaymentService {
 
         if (payment == null || payment.isEmpty())
 
-            throw new NotFoundCustomerException();
+            throw new NotFoundPaymentException();
 
         return  PaymentHistory.listToResponse(payment);
 

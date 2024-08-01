@@ -74,14 +74,14 @@ public class StudyChannelController {
     @Operation(summary = "스터디 채널 목록 조회", description = "스터디 채널 목록을 조회하기 위한 API")
     @Parameter(name = "page", description = "조회할 페이지 번호 - 없을 경우 1")
     @Parameter(name = "size", description = "조회할 목록 개수 - 없을 경우 6")
-    @Parameter(name = "sort", description = "정렬 방법 - 없을 경우 최신 순, 정렬 기준 : RECENT, POPULAR")
+    @Parameter(name = "order", description = "정렬 방법 - 없을 경우 최신 순, 정렬 기준 : RECENT, VIEW_COUNT")
     @Parameter(name = "type", description = "모임 방식 - OFFLINE, ONLINE")
     @Parameter(name = "status", description = "모집 상태 - RECRUITING, RECRUIT_COMPLETED")
     @Parameter(name = "category", description = "카테고리 - IT, LANGUAGE, EMPLOYMENT, SELF_DEVELOPMENT")
     public ResponseEntity<StudyChannelListResponse> getStudyChannels(
         @RequestParam(name = "page", required = false, defaultValue = "1") int page,
         @RequestParam(name = "size", required = false, defaultValue = "6") int size,
-        @RequestParam(name = "sort", required = false, defaultValue = "RECENT") SortOrder sortOrder,
+        @RequestParam(name = "order", required = false, defaultValue = "RECENT") SortOrder sortOrder,
         @RequestParam(name = "type", required = false) MeetingType type,
         @RequestParam(name = "status", required = false) RecruitmentStatus status,
         @RequestParam(name = "category", required = false) Category category
@@ -89,7 +89,6 @@ public class StudyChannelController {
         return ResponseEntity.ok(studyChannelService.getStudyChannels(PagingUtils.createPageable(page, size, sortOrder), new SearchCondition(type, status, category)));
     }
 
-    // 회원이 아닌 사람의 경우 로그인하라고 유도
     @GetMapping("/study-channels/{studyChannelId}")
     @Operation(summary = "특정 스터디 채널 조회", description = "특정 스터디 채널을 조회하기 위한 API")
     @Parameter(name = "studyChannelId", description = "스터디 채널 ID", required = true)
@@ -110,4 +109,5 @@ public class StudyChannelController {
         boolean isStudyMember = studyChannelService.checkStudyMemberInStudyChannel(memberId, studyChannelId);
         return ResponseEntity.ok(isStudyMember);
     }
+
 }

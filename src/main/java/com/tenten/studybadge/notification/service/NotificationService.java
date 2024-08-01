@@ -15,11 +15,14 @@ import com.tenten.studybadge.study.member.domain.entity.StudyMember;
 import com.tenten.studybadge.study.member.domain.repository.StudyMemberRepository;
 import com.tenten.studybadge.type.notification.NotificationType;
 import com.tenten.studybadge.type.study.member.StudyMemberStatus;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -28,16 +31,16 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequiredArgsConstructor
 public class NotificationService {
 
-    private final long timeout = 2 * 60 * 1000L; // 2분 타임아웃
+    private final long timeout = 60 * 60 * 1000L; // 60분 타임아웃
     private final EmitterRepository emitterRepository;
     private final NotificationRepository notificationRepository;
     private final StudyMemberRepository studyMemberRepository;
     private final RedisPublisher redisPublisher;
     private final ObjectMapper objectMapper;
 
-    public List<Notification> getNotifications(Long memberId) {
+    public Page<Notification> getNotifications(Long memberId, Pageable pageable) {
         // 특정 사용자의 모든 알림을 조회
-        return notificationRepository.findAllByReceiverId(memberId);
+        return notificationRepository.findAllByReceiverIdOrderByCreatedAtDesc(memberId, pageable);
     }
 
     public void patchNotification(Long memberId, NotificationReadRequest notificationReadRequest) {
@@ -49,12 +52,11 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-    public List<Notification> getUnreadNotifications(Long memberId) {
-        // 특정 사용자의 읽지 않은 알림을 조회
-        return notificationRepository.findAllByReceiverIdAndIsReadFalse(memberId);
+    public Page<Notification> getUnreadNotifications(Long memberId, Pageable pageable) {
+        return notificationRepository.findAllByReceiverIdAndIsReadFalseOrderByCreatedAtDesc(memberId, pageable);
     }
 
-    public SseEmitter subscribe(Long memberId, String lastEventId) {
+    public SseEmitter subscribe(Long memberId, String lastEventId, HttpServletResponse response) {
         String emitterId = makeTimeIncludeId(memberId);
         SseEmitter sseEmitter = new SseEmitter(timeout);
 
@@ -82,6 +84,10 @@ public class NotificationService {
         if (hasLostData(lastEventId)) {
             sendLostData(lastEventId, memberId, emitterId, sseEmitter);
         }
+
+        response.setHeader("X-Accel-Buffering", "no"); // NGINX PROXY 에서의 필요설정 불필요한 버퍼링방지
+        response.setHeader("Connection", "keep-alive");
+        response.setHeader("Cache-Control", "no-cache");
 
         return sseEmitter;
     }

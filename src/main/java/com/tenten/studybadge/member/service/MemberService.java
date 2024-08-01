@@ -6,6 +6,7 @@ import com.tenten.studybadge.common.email.MailService;
 import com.tenten.studybadge.common.exception.InvalidTokenException;
 import com.tenten.studybadge.common.exception.member.*;
 import com.tenten.studybadge.common.exception.participation.NotFoundParticipationException;
+import com.tenten.studybadge.common.exception.studychannel.NotFoundStudyChannelException;
 import com.tenten.studybadge.common.jwt.JwtTokenProvider;
 import com.tenten.studybadge.common.redis.RedisService;
 import com.tenten.studybadge.member.dto.*;
@@ -176,7 +177,7 @@ public class MemberService {
         List<StudyMember> studyMembers = studyMemberRepository.findAllByMemberIdWithStudyChannel(memberId);
         if (studyMembers == null || studyMembers.isEmpty())
 
-            throw new NotFoundMemberException();
+            throw new NotFoundMyStudyException();
 
         return MemberStudyList.listToResponse(studyMembers, attendanceService::getAttendanceRatioForMember);
     }
@@ -194,25 +195,40 @@ public class MemberService {
 
     public MemberResponse memberUpdate(Long memberId, MemberUpdateRequest updateRequest, MultipartFile profile) {
 
-        String imgUrl = null;
 
         if (profile != null && !profile.isEmpty()) {
-            imgUrl = awsS3Service.uploadFile(profile);
+            String imgUrl = awsS3Service.uploadFile(profile);
             updateRequest.setImgUrl(imgUrl);
         }
 
-        Member member = memberRepository.findById(memberId).orElseThrow(NotFoundMemberException::new);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(NotFoundMemberException::new);
 
-        Member updateMember = member.toBuilder()
-                .account(updateRequest.getAccount())
-                .accountBank(updateRequest.getAccountBank())
-                .nickname(updateRequest.getNickname())
-                .introduction(updateRequest.getIntroduction())
-                .imgUrl(updateRequest.getImgUrl())
-                .build();
-        memberRepository.save(updateMember);
+        if ((member.getPlatform() == Platform.KAKAO || member.getPlatform() == Platform.NAVER)
+                && member.getStatus().equals(MemberStatus.WAIT_FOR_APPROVAL)) {
 
-        return MemberResponse.toResponse(updateMember);
+            member = member.toBuilder()
+                    .account(updateRequest.getAccount())
+                    .accountBank(updateRequest.getAccountBank())
+                    .nickname(updateRequest.getNickname())
+                    .introduction(updateRequest.getIntroduction())
+                    .imgUrl(updateRequest.getImgUrl())
+                    .status(MemberStatus.ACTIVE)
+                    .build();
+        } else {
+
+            member = member.toBuilder()
+                    .account(updateRequest.getAccount())
+                    .accountBank(updateRequest.getAccountBank())
+                    .nickname(updateRequest.getNickname())
+                    .introduction(updateRequest.getIntroduction())
+                    .imgUrl(updateRequest.getImgUrl())
+                    .build();
+        }
+
+        memberRepository.save(member);
+
+        return MemberResponse.toResponse(member);
     }
 
     public void withdrawal(Long memberId) {

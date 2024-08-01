@@ -2,10 +2,7 @@ package com.tenten.studybadge.participation.service;
 
 import com.tenten.studybadge.common.exception.member.NotFoundMemberException;
 import com.tenten.studybadge.common.exception.participation.*;
-import com.tenten.studybadge.common.exception.studychannel.AlreadyStudyMemberException;
-import com.tenten.studybadge.common.exception.studychannel.NotFoundStudyChannelException;
-import com.tenten.studybadge.common.exception.studychannel.NotStudyLeaderException;
-import com.tenten.studybadge.common.exception.studychannel.RecruitmentCompletedStudyChannelException;
+import com.tenten.studybadge.common.exception.studychannel.*;
 import com.tenten.studybadge.member.domain.entity.Member;
 import com.tenten.studybadge.member.domain.repository.MemberRepository;
 import com.tenten.studybadge.participation.domain.entity.Participation;
@@ -95,10 +92,12 @@ public class StudyChannelParticipationService {
         if (!participation.getParticipationStatus().equals(ParticipationStatus.APPROVE_WAITING)) {
             throw new InvalidApprovalStatusException();
         }
-
-        approveMember(participation, studyChannel, applyMember);
+        if (studyChannel.isFull()) {
+            throw new AlreadyStudyMemberFullException();
+        }
+        StudyMember studyMember = approveMember(participation, studyChannel, applyMember);
         Point point = deductPoint(applyMember, studyChannel.getDeposit());
-        recordDeposit(studyChannel, applyMember, point.getAmount());
+        recordDeposit(studyChannel, applyMember, studyMember, -1 * point.getAmount());
 
     }
 
@@ -146,22 +145,25 @@ public class StudyChannelParticipationService {
                 .build();
     }
 
-    private void approveMember(Participation participation, StudyChannel studyChannel, Member member) {
+    private StudyMember approveMember(Participation participation, StudyChannel studyChannel, Member member) {
         // 참가 신청 내역 변경(승인 대기중 -> 승인됨)
         participation.approve();
         StudyMember studyMember = StudyMember.member(member, studyChannel);
         participationRepository.save(participation);
         studyMemberRepository.save(studyMember);
+        return studyMember;
     }
 
     // 예치금 내역 기록
-    private void recordDeposit(StudyChannel channel, Member member, Integer amount) {
+    private void recordDeposit(StudyChannel channel, Member member, StudyMember studyMember, Integer amount) {
         StudyChannelDeposit deposit = StudyChannelDeposit.builder()
                 .depositAt(LocalDateTime.now())
                 .amount(amount)
+                .refundsAmount(0)
                 .depositStatus(DepositStatus.DEPOSIT)
                 .studyChannel(channel)
                 .member(member)
+                .studyMember(studyMember)
                 .attendanceRatio(0.0)
                 .build();
         studyChannelDepositRepository.save(deposit);
@@ -172,15 +174,15 @@ public class StudyChannelParticipationService {
 
         // 포인트 내역 기록
         Point point = Point.builder()
-                .amount(deposit)
+                .amount(-1 * deposit)
                 .member(member)
                 .historyType(PointHistoryType.SPENT)
                 .transferType(TransferType.STUDY_DEPOSIT)
                 .build();
 
-        // 사용자 포인트 차감(차감 시 포인트 내역에 기록된 금액을 차감)
+        // 사용자 포인트 차감(차감 시 포인트 내역에 기록된 금액을 차감) - 포인트 내역에 금액이 마이너스(-) 인것 주의!
         Member updatedMember = member.toBuilder()
-                .point(member.getPoint() - point.getAmount())
+                .point(member.getPoint() + point.getAmount())
                 .build();
         pointRepository.save(point);
         memberRepository.save(updatedMember);

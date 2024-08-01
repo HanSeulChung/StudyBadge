@@ -59,7 +59,7 @@ public class StudyMemberService {
         if (!studyMemberRepository.existsByStudyChannelIdAndMemberId(studyChannelId, memberId)) {
             throw new NotStudyMemberException();
         }
-        List<StudyMember> studyMembers = studyMemberRepository.findAllByStudyChannelIdWithMember(studyChannelId);
+        List<StudyMember> studyMembers = studyMemberRepository.findAllActiveStudyMembers(studyChannelId);
 
         boolean isLeader = studyMembers.stream()
                 .anyMatch(studyMember -> studyMember.getMember().getId().equals(memberId) && studyMember.isLeader());
@@ -94,12 +94,12 @@ public class StudyMemberService {
     }
 
     public List<ScheduleStudyMemberResponse> getStudyMembersSingleSchedule(Long studyChannelId, Long scheduleId, Long memberId) {
-        studyMemberRepository.findByMemberIdAndStudyChannelId(studyChannelId, memberId).orElseThrow(NotStudyMemberException::new);
+        studyMemberRepository.findByMemberIdAndStudyChannelId(memberId, studyChannelId).orElseThrow(NotStudyMemberException::new);
         SingleSchedule singleSchedule = singleScheduleRepository.findById(scheduleId).orElseThrow(NotFoundSingleScheduleException::new);
         LocalDate scheduleDate = singleSchedule.getScheduleDate();
         LocalDate currentDate = LocalDate.now();
 
-        List<StudyMember> studyMembers = studyMemberRepository.findAllByStudyChannelIdWithMember(studyChannelId);
+        List<StudyMember> studyMembers = studyMemberRepository.findAllActiveStudyMembers(studyChannelId);
 
         if (scheduleDate.isBefore(currentDate)) {
             List<Attendance> attendances = attendanceRepository.findAllBySingleScheduleId(scheduleId);
@@ -109,12 +109,12 @@ public class StudyMemberService {
     }
 
     public List<ScheduleStudyMemberResponse> getStudyMembersRepeatSchedule(Long studyChannelId, Long scheduleId, Long memberId, LocalDate date) {
-        studyMemberRepository.findByMemberIdAndStudyChannelId(studyChannelId, memberId).orElseThrow(NotStudyMemberException::new);
+        studyMemberRepository.findByMemberIdAndStudyChannelId(memberId, studyChannelId).orElseThrow(NotStudyMemberException::new);
         RepeatSchedule repeatSchedule = repeatScheduleRepository.findById(scheduleId).orElseThrow(NotFoundRepeatScheduleException::new);
         validate(repeatSchedule, date);
         LocalDate currentDate = LocalDate.now();
 
-        List<StudyMember> studyMembers = studyMemberRepository.findAllByStudyChannelIdWithMember(studyChannelId);
+        List<StudyMember> studyMembers = studyMemberRepository.findAllActiveStudyMembers(studyChannelId);
 
         if (date.isBefore(currentDate)) {
             LocalDateTime startDateTime = date.atStartOfDay();
