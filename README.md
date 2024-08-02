@@ -731,4 +731,7 @@
 ## Trouble Shooting 
 | 순번 | 담당자 | 내용                                                                                                  | 경로                                                               |
 |------|--------|-----------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
-| 1    | 정한슬 | Nginx를 프록시 서버로 두었을 경우 SSE 관련 문제                              | [server-sent-event_with_nginx](./docs/troubleshooting/troubles/server-sent-event_with_nginx.md) |
+| 1    | 정한슬 | 테이블에 NULL 값 설정 관련 고민                              | [schedule_field_null](./docs/troubleshooting/troubles/schedule_field_null.md) |
+| 2    | 정한슬 | AWS 로드밸런서를 통해 https로 배포시 unhealthy 문제            | [health_check_unhealthy](./docs/troubleshooting/troubles/health_check_unhealthy.md) |
+| 3    | 정한슬 | https/ ssl 관련 재설정(비용 문제)                              | [https_ssl](./docs/troubleshooting/troubles/https_ssl.md) |
+| 4    | 정한슬 | Nginx를 프록시 서버로 두었을 경우 SSE 관련 문제                              | [server-sent-event_with_nginx](./docs/troubleshooting/troubles/server-sent-event_with_nginx.md) |
