@@ -14,6 +14,7 @@
 
 ## 👨‍💻 Backend Member 👨‍💻 
 
+
 <table>
   <tr>
     <th style="width: 33%;">한슬</th>
@@ -22,19 +23,16 @@
   </tr>
   <tr>
     <td>
-      <img src="https://via.placeholder.com/150" alt="한슬" style="width:150px;"/>
+      <img src="https://avatars.githubusercontent.com/u/94779505?v=4" alt="한슬" style="width:150px;"/>
       <br/>
-<a href="https://github.com/HanSeulChung" target="_blank">@HanSeulChung</a>
     </td>
     <td>
-      <img src="https://via.placeholder.com/150" alt="민호" style="width:150px;"/>
+      <img src="https://avatars.githubusercontent.com/u/100666180?v=4" alt="민호" style="width:150px;"/>
       <br/>
-      @minho
     </td>
     <td>
-      <img src="https://via.placeholder.com/150" alt="윤호" style="width:150px;"/>
+      <img src="https://avatars.githubusercontent.com/u/103429818?v=4" alt="윤호" style="width:150px;"/>
       <br/>
-      @yunho
     </td>
   </tr>
   <tr>
@@ -735,3 +733,7 @@
 | 2    | 정한슬 | AWS 로드밸런서를 통해 https로 배포시 unhealthy 문제            | [health_check_unhealthy](./docs/troubleshooting/troubles/health_check_unhealthy.md) |
 | 3    | 정한슬 | https/ ssl 관련 재설정(비용 문제)                              | [https_ssl](./docs/troubleshooting/troubles/https_ssl.md) |
 | 4    | 정한슬 | Nginx를 프록시 서버로 두었을 경우 SSE 관련 문제                              | [server-sent-event_with_nginx](./docs/troubleshooting/troubles/server-sent-event_with_nginx.md) |
+
+
+## 🔗 Link 🔗
+- [노션](https://www.notion.so/na-s-note-page/StudyBadge-88869c57effe4ef2a33ea393c594bcf4?pvs=4)
